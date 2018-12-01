@@ -5,7 +5,7 @@ Vagrant.configure("2") do |config|
 
   # toggle virtualbox guest additions installation for faster testing
   # https://github.com/dotless-de/vagrant-vbguest
-  config.vbguest.auto_update = false
+  config.vbguest.auto_update = true
 
   config.vm.box = "centos/7"
 
