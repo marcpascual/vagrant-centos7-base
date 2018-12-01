@@ -24,6 +24,7 @@ Vagrant.configure("2") do |config|
  
   config.vm.provider "virtualbox" do |vb|
     vb.name = "template"
+    # dont use a linked clone for template
     vb.linked_clone = true
     vb.memory = "2048"
     vb.cpus = 2
