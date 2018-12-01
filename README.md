@@ -8,3 +8,5 @@
 - EPEL enabled
 - openjdk 1.8.0 installed
 
+run *init.sh* to install the required vagrant plugins prior to running *vagrant up*
+run *vagrant package* after the vm comes up

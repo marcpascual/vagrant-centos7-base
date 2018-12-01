@@ -8,7 +8,9 @@ Vagrant.configure("2") do |config|
   config.vbguest.auto_update = false
 
   config.vm.box = "centos/7"
-  #config.vm.network "forwarded_port", guest: 8443, host: 8443 
+
+  # with the 2nd nic, port forwarding won't be necessary
+  # config.vm.network "forwarded_port", guest: 8443, host: 8443 
   
   # first nic is always NAT
   # second can be anything
