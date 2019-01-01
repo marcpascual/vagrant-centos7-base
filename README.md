@@ -1,4 +1,4 @@
-# CentOS 7 base Vagrant box for general-purpose testing
+# CentOS 7 Vagrant config for lab setup
 
 ## configuration:
 - disabled ipv6
@@ -17,5 +17,7 @@
 
 upload to vagrant cloud with:
 ```
-vagrant cloud publish -f --release --description "base CentOS 7 + custom config and guest additions" --short-description "base CentOS 7 for general-purpose testing" --version-description "first release" marcpascual/base-centos7 0.0.1 virtualbox package.box
+vagrant cloud publish -f --release --description "base CentOS 7 + custom config and guest additions" \
+  --short-description "base CentOS 7 for general-purpose testing" --version-description "first release" \
+  marcpascual/base-centos7 0.0.1 virtualbox package.box
 ```
