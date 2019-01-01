@@ -25,7 +25,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.name = "template"
     # dont use a linked clone for template
-    vb.linked_clone = true
+    # vb.linked_clone = true
     vb.memory = "2048"
     vb.cpus = 2
     # change nic type of eth0 to virtio (defaults to e1000). however this does not 
@@ -53,7 +53,18 @@ Vagrant.configure("2") do |config|
   # install EPEL and all other tools we need
   config.vm.provision "shell", inline: <<-SHELL
    rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-   yum -y install wget net-tools telnet vim-enhanced java-1.8.0-openjdk.x86_64
+   yum -y install git wget net-tools telnet vim-enhanced java-1.8.0-openjdk.x86_64
   SHELL
+
+  # do some cleanup to reduce the box size
+  # https://stackoverflow.com/questions/35727026/how-to-reduce-the-size-of-vagrant-vm-image
+  # https://stackoverflow.com/questions/11659005/how-to-resize-a-virtualbox-vmdk-file/35620550#35620550
+  # config.vm.provision :reload
+  # config.vm.provision "shell", inline: <<-SHELL
+  #  yum clean all
+  #  rm -rf /tmp/*
+  #  rm -rf /var/cache/yum
+  #  cat /dev/zero > z; sync; sleep 3; sync; rm -f z
+  # SHELL
 
 end
