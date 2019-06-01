@@ -1,7 +1,8 @@
 # CentOS 7 Vagrant config for lab setup
 
+# USED TO BUILD BASE IMAGE ONLY - E.G. FOR UPLOAD TO VAGRANT CLOUD ONLY
+
 ## configuration:
-- disabled ipv6
 - 2 nics. eth0 for NAT (internet access), eth1 for host-only (app testing)
 - virtualbox guest additions installed
 - based on centos/7 from vagrantcloud.com
