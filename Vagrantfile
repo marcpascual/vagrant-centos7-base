@@ -39,8 +39,8 @@ Vagrant.configure("2") do |config|
   end
 
   # change the hostname
-  config.vm.provision "shell", inline: <<-SHELL
-    hostnamectl set-hostname HOSTNAME
+  config.vm.provision "shell", :args => HOSTNAME,  inline: <<-SHELL
+    hostnamectl set-hostname $1
     reboot
   SHELL
 
@@ -53,23 +53,18 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
    rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
    yum -y install git wget net-tools telnet vim-enhanced java-1.8.0-openjdk.x86_64 jq psmisc pstree
-   config.vm.provision :reload
-   config.vm.provision "shell", inline: <<-SHELL
-   yum clean all
-   rm -rf /tmp/*
-   rm -rf /var/cache/yum
-   cat /dev/zero > z; sync; sleep 3; sync; rm -f z
   SHELL
+
+  config.vm.provision :reload
 
   # do some cleanup to reduce the box size
   # https://stackoverflow.com/questions/35727026/how-to-reduce-the-size-of-vagrant-vm-image
   # https://stackoverflow.com/questions/11659005/how-to-resize-a-virtualbox-vmdk-file/35620550#35620550
-  # config.vm.provision :reload
-  # config.vm.provision "shell", inline: <<-SHELL
-  #  yum clean all
-  #  rm -rf /tmp/*
-  #  rm -rf /var/cache/yum
-  #  cat /dev/zero > z; sync; sleep 3; sync; rm -f z
-  # SHELL
+  config.vm.provision "shell", inline: <<-SHELL
+    yum clean all
+    rm -rf /tmp/*
+    rm -rf /var/cache/yum
+    cat /dev/zero > z; sync; sleep 3; sync; rm -f z
+  SHELL
 
 end
