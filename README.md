@@ -14,7 +14,18 @@
 - run *vagrant up*
 - run *vagrant halt*
 - cat *scripts/vboxmanage-resize.sh*, follow the sample commands to reduce the vmdk size of the vm
-- run *vagrant package*
+  TODO: this does not currently work
+- run *vagrant package --base template --output package.box*
+	this produces a tgz-compressed vagrant image (package.box) ready for publishing
+	when exploded, the contents looks like:
+
+```
+m@HP MINGW64 ~/git/vagrant/vagrant-centos7-base-DONOTUSE(master)
+$ tar -tvf package.box
+-rw-rw-rw- 0/0       560495104 2019-06-02 20:58 ./box-disk001.vmdk
+-rw-rw-rw- 0/0            6878 2019-06-02 20:56 ./box.ovf
+-rw-rw-rw- 0/0             516 2019-06-02 20:58 ./Vagrantfile
+```
 
 upload to vagrant cloud with:
 ```

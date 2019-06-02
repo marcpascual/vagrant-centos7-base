@@ -1,5 +1,0 @@
-1. a box package NOT from a cloned image
-
-2. reduce the image size
-- https://stackoverflow.com/questions/35727026/how-to-reduce-the-size-of-vagrant-vm-image
-- https://stackoverflow.com/questions/11659005/how-to-resize-a-virtualbox-vmdk-file/35620550#35620550

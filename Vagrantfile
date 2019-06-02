@@ -2,6 +2,7 @@
 # vi: set ft=ruby :
 
 HOSTNAME = "template"
+VERSION = "0.0.3"
 
 Vagrant.configure("2") do |config|
 
