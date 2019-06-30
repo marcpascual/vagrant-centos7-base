@@ -2,13 +2,13 @@
 
 set -euo pipefail
 
-VERSION="`grep ^VERSION Vagrantfile | awk '{print $NF}'`"
+VERSION=`grep ^VERSION Vagrantfile | awk '{print $NF}'`
 
 # publish to vagrant cloud
-PUBLISH=0
+PUBLISH=1
 
 # clean up build artifacts
-CLEANUP=0
+CLEANUP=1
 
 titlewrap() {
 	_LEN=${#1}
@@ -22,10 +22,12 @@ if [ -f "package.box" ]; then
 	exit 1
 fi
 
+# manually update/delete these plugins if you want to update
 titlewrap "install required vagrant plugins"
-vagrant plugin install vagrant-reload
-vagrant plugin install vagrant-vbguest
+vagrant plugin list | grep vagrant-reload || vagrant plugin install vagrant-reload
+vagrant plugin list | grep vagrant-vbguest || vagrant plugin install vagrant-vbguest
 
+# manually update the box image if you want to
 titlewrap "download the centos/7 base image"
 vagrant box add centos/7 --provider virtualbox || true
 
@@ -37,6 +39,10 @@ vagrant halt
 
 titlewrap "generate vagrant package"
 vagrant package --base template --output package.box
+
+titlewrap "add to local box repository"
+vagrant box remove --box-version 0 marcpascual-latest || true
+vagbant box add --name marcpascual-latest --provider virtualbox ./package.box
 
 if [ $PUBLISH -eq 1 ]; then
 	titlewrap "publish to vagrant cloud"

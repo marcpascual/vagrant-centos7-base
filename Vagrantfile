@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 HOSTNAME = "template"
-VERSION = "0.0.3"
+VERSION = "0.0.5"
 
 Vagrant.configure("2") do |config|
 
@@ -11,19 +11,6 @@ Vagrant.configure("2") do |config|
   config.vbguest.auto_update = true
 
   config.vm.box = "centos/7"
-
-  # with the 2nd nic, port forwarding won't be necessary
-  # config.vm.network "forwarded_port", guest: 8443, host: 8443
-
-  # first nic is always NAT
-  # second can be anything
-  # but set both to virtio
-  config.vm.network "private_network",
-    ip: "192.168.56.100",
-    netmask: "255.255.255.0",
-    dhcp_enabled: false,
-    nic_type: "virtio",
-    forward_mode: "none"
 
   config.vm.provider "virtualbox" do |vb|
     vb.name = HOSTNAME
@@ -53,7 +40,8 @@ Vagrant.configure("2") do |config|
   # install EPEL and all other tools we need
   config.vm.provision "shell", inline: <<-SHELL
    rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-   yum -y install git wget net-tools telnet vim-enhanced java-1.8.0-openjdk.x86_64 jq psmisc pstree
+   yum -y install git wget net-tools telnet vim-enhanced java-1.8.0-openjdk.x86_64 \
+		jq psmisc pstree unzip docker docker-compose
   SHELL
 
   config.vm.provision :reload
@@ -61,11 +49,15 @@ Vagrant.configure("2") do |config|
   # do some cleanup to reduce the box size
   # https://stackoverflow.com/questions/35727026/how-to-reduce-the-size-of-vagrant-vm-image
   # https://stackoverflow.com/questions/11659005/how-to-resize-a-virtualbox-vmdk-file/35620550#35620550
+	#
+	# unable to ssh to the machine after packaging due to different keys
+  # https://blog.pythian.com/vagrant-re-packaging-ssh/
   config.vm.provision "shell", inline: <<-SHELL
     yum clean all
     rm -rf /tmp/*
     rm -rf /var/cache/yum
     cat /dev/zero > z; sync; sleep 3; sync; rm -f z
+		echo 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant' > /home/vagrant/.ssh/authorized_keys
   SHELL
 
 end
